@@ -41,3 +41,19 @@ This course is created by Maximilian Schwarzmüller
 
   - Then you get a local host address, e.g. `http://localhost:4200/`.
   - This will reload and update all changes during running.
+
+# Setups:
+
+- To see the images, adjust the angular.json with the following assets:
+
+  ```ts
+  {
+  "projects": {
+      "essentials": {
+        "architect": {
+          "build": {
+              "assets": ["src/favicon.ico", "src/assets"],
+            },
+  }}}}
+
+  ```
