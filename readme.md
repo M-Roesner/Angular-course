@@ -1,3 +1,9 @@
+# Angular - The Complete Guide (2024 Edition)
+
+This course is created by Maximilian Schwarzmüller
+
+[course code repository](https://github.com/mschwarzmueller/angular-complete-guide-course-resources)
+
 # The Angular CLI:
 
 - [The Angular CLI](https://angular.dev/tools/cli)
@@ -20,6 +26,15 @@
 
 - new project:
   `ng new <APP_NAME>`
+
+  - Note: If you receive an error message like this:
+
+        ng : Die Datei "C:\PATH\AppData\Roaming\npm\ng.ps1" kann nicht geladen werden, da die Ausführung von Skripts auf diesem System deaktiviert ist. Weitere Informationen finden Sie unter
+        "about_Execution_Policies" (https:/go.microsoft.com/fwlink/?LinkID=135170).
+
+    - Click on the link of the file, the file will be displayed in vsc.
+    - Right-click on the file in vsc and open it with "Reveal in File Explorer".
+    - Remove the file and enter the command again.
 
 - start server:
   `npm start` or `ng serve`
