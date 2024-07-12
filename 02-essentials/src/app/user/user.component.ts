@@ -17,6 +17,7 @@ export class UserComponent {
    * Use with the 'Input' decorator
    */
   @Input({ required: true }) user!: User;
+  @Input({ required: true }) selected!: boolean;
 
   @Output() select = new EventEmitter<string>();
 
