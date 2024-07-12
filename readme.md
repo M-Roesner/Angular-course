@@ -37,10 +37,15 @@ This course is created by Maximilian Schwarzmüller
     - Remove the file and enter the command again.
 
 - start server:
+
   `npm start` or `ng serve`
 
   - Then you get a local host address, e.g. `http://localhost:4200/`.
   - This will reload and update all changes during running.
+
+- create a new component by CLI:
+
+  `ng generate component <COMPONENT_NAME>` or `ng g c <COMPONENT_NAME>`
 
 # Setups:
 
