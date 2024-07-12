@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // import { DUMMY_USERS } from '../dummy-users';
 
@@ -15,14 +15,19 @@ export class UserComponent {
   /**
    * Use with the 'Input' decorator
    */
+  @Input({ required: true }) id!: string;
   @Input({ required: true }) avatar!: string;
   @Input({ required: true }) name!: string;
+
+  @Output() select = new EventEmitter<string>();
 
   get imagePath() {
     return `assets/users/${this.avatar}`;
   }
 
-  onSelectUser() {}
+  onSelectUser() {
+    this.select.emit(this.id);
+  }
 
   /**
    * Use with the 'input' function:
@@ -31,10 +36,15 @@ export class UserComponent {
    */
   // avatar = input.required<string>(); // Attention: With this usage it is readonly, you cannot .set / overwrite the value!
   // name = input.required<string>();
+  // id = input.required<string>();
+
+  // select = output<string>();
 
   // imagePath = computed(() => `assets/users/${this.avatar()}`);
 
-  // onSelectUser() {}
+  // onSelectUser() {
+  //   this.select.emit(this.id);
+  // }
 
   /** without 'signal' */
   // selectedUser = DUMMY_USERS[randomIndex];
