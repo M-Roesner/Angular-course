@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+// import { NgFor, NgIf } from '@angular/common';
 
 import { DUMMY_USERS } from './dummy-users';
 
@@ -9,7 +10,12 @@ import { TasksComponent } from './tasks/tasks.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, UserComponent, TasksComponent],
+  imports: [
+    HeaderComponent,
+    UserComponent,
+    TasksComponent,
+    // , NgFor, NgIf
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -18,7 +24,7 @@ export class AppComponent {
 
   // TASK from the course: Create a task component and give it the name that is also to be displayed.
 
-  selectedUserId = 'u1';
+  selectedUserId?: string;
 
   //
   get selectedUser() {

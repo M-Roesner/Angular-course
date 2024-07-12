@@ -2,19 +2,28 @@
 
 <main>
   <ul id="users">
+    @for (user of users; track user.id) {
     <li>
-      <app-user [user]="users[0]" (select)="onSelectUser($event)" />
+      <app-user [user]="user" (select)="onSelectUser($event)" />
     </li>
-    <li>
-      <app-user [user]="users[1]" (select)="onSelectUser($event)" />
-    </li>
-    <li>
-      <app-user [user]="users[2]" (select)="onSelectUser($event)" />
-    </li>
-    <li>
-      <app-user [user]="users[3]" (select)="onSelectUser($event)" />
+    }
+  </ul>
+
+  @if (selectedUser) {
+  <app-tasks [name]="selectedUser!.name" />
+  } @else {
+  <p>Please select a user from the list.</p>
+  }
+
+  <!-- This version needs more imports in the ts component -->
+  <!-- <ul id="users">
+    <li *ngFor="let user of users">
+      <app-user [user]="user" (select)="onSelectUser($event)" />
     </li>
   </ul>
 
-  <app-tasks [name]="selectedUser?.name" />
+  <app-tasks *ngIf="selectedUser; else fallback" [name]="selectedUser!.name" />
+  <ng-template #fallback>
+    <p>Please select a user from the list.</p>
+  </ng-template> -->
 </main>
