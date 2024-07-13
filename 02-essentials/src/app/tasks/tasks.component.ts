@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from './task/task.component';
 
-import { DUMMY_TASKS } from '../dummy-tasks';
 import { NewTaskComponent } from './new-task/new-task.component';
-import { type NewTaskData, type Task } from './task/task.module';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -16,34 +15,20 @@ export class TasksComponent {
   @Input() userId!: string;
   @Input() name?: string;
 
-  filteredTasks: Task[] = DUMMY_TASKS;
-
   isAddingTask = false;
 
-  get selectedUserTasks() {
-    return this.filteredTasks.filter((task) => task.userId === this.userId);
-  }
+  constructor(private tasksService: TasksService) {} // Get access to tasksService with usage of the constructor.
+  // private tasksService = inject(TasksService); // Get access to tasksService with usage of inject function.
 
-  onCompleteTask(id: string) {
-    this.filteredTasks = this.filteredTasks.filter((task) => task.id !== id);
+  get selectedUserTasks() {
+    return this.tasksService.getUserTask(this.userId);
   }
 
   onStartAddTask() {
     this.isAddingTask = true;
   }
 
-  onCancelAddTask() {
-    this.isAddingTask = false;
-  }
-
-  onAddTask(taskData: NewTaskData) {
-    this.filteredTasks.unshift({
-      id: new Date().getTime().toString(),
-      userId: this.userId,
-      title: taskData.title,
-      summary: taskData.summary,
-      dueDate: taskData.date,
-    });
+  onCloseAddTask() {
     this.isAddingTask = false;
   }
 }

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { type Task } from './task.module';
 import { CardComponent } from '../../shared/card/card.component';
 import { DatePipe } from '@angular/common';
+import { TasksService } from '../tasks.service';
 
 /**
  * Dokumentation for using of the date pipe:
@@ -17,9 +18,9 @@ import { DatePipe } from '@angular/common';
 export class TaskComponent {
   @Input({ required: true }) task!: Task;
 
-  @Output() completed = new EventEmitter<string>();
+  private tasksService = inject(TasksService);
 
   onCompleteTask() {
-    this.completed.emit(this.task.id);
+    this.tasksService.removeTask(this.task.id);
   }
 }
