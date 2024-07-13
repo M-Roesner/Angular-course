@@ -1,4 +1,4 @@
-@if (isAddingTask) {<app-new-task [userId]="userId" />}
+@if (isAddingTask) {<app-new-task (cancel)="onCancelAddTask()" />}
 <section id="tasks">
   <header>
     <h2>{{ name }}'s Tasks</h2>
