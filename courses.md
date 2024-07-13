@@ -12,3 +12,5 @@ Note: If you are starting with a new copied project! Go to the project directory
 [03-essentials-modules](https://github.com/mschwarzmueller/angular-complete-guide-course-resources/blob/main/attachments/03-essentials-modules/01-starting-project.zip)
 
 - Migration of components to modules
+
+[04-essentials-practice](https://github.com/mschwarzmueller/angular-complete-guide-course-resources/blob/main/attachments/04-essentials-practice/01-starting-project.zip)
