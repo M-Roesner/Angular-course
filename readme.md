@@ -62,3 +62,34 @@ This course is created by Maximilian Schwarzmüller
   }}}}
 
   ```
+
+# Extras:
+
+## DatePipe:
+
+Dokumentation: [DatePipe](https://angular.dev/api/common/DatePipe)
+
+Example:
+
+```ts
+// ts component
+import { DatePipe } from "@angular/common";
+
+@Component({
+  selector: "app-task",
+  imports: [DatePipe],
+  templateUrl: "./task.component.html",
+  styleUrl: "./task.component.css",
+})
+export class TaskComponent {
+  // some code ...
+}
+```
+
+```html
+<!-- html component -->
+<article>
+  <time>{{ task.dueDate | date : "fullDate" }}</time>
+  <!-- some content ... -->
+</article>
+```
