@@ -65,7 +65,9 @@ This course is created by Maximilian Schwarzmüller
 
 # Extras:
 
-## DatePipe:
+## Data formatting:
+
+### DatePipe:
 
 Dokumentation: [DatePipe](https://angular.dev/api/common/DatePipe)
 
@@ -93,6 +95,49 @@ export class TaskComponent {
   <time>{{ task.dueDate | date : "fullDate" }}</time>
   <!-- some content ... -->
 </article>
+```
+
+### CurrencyPipe:
+
+Dokumentation: [CurrencyPipe](https://angular.dev/api/common/CurrencyPipe)
+
+Example:
+
+```ts
+// ts component
+import { CurrencyPipe } from "@angular/common";
+
+@Component({
+  selector: "app-investment-results",
+  standalone: true,
+  imports: [CurrencyPipe],
+  templateUrl: "./investment-results.component.html",
+  styleUrl: "./investment-results.component.css",
+})
+export class InvestmentResultsComponent {
+  // some code ...
+}
+```
+
+Formatting a value with the currency:
+`{{ result.value | currency }}` add '| currency' after the value!
+
+```html
+<!-- html component -->
+<table>
+  <tbody>
+    @for (result of results; track result.year) {
+    <tr>
+      <td>{{ result.year }}</td>
+      <td>{{ result.valueEndOfYear | currency }}</td>
+      <td>{{ result.interest | currency }}</td>
+      <td>{{ result.totalInterest | currency }}</td>
+      <td>{{ result.totalAmountInvested | currency }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+<!-- some content ... -->
 ```
 
 ## Forms:
