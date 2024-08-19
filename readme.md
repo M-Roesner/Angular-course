@@ -132,3 +132,48 @@ export class UserInputComponent {
   <!-- some code -->
 </form>
 ```
+
+### Input binding
+
+To bind/connect the input binding with the component.
+
+#### TS file
+
+To bind the value binding with the component, 'FormsModule' is required!
+
+Hint: The value that you get out an input will always be a string not a number.
+
+```ts
+import { FormsModule } from "@angular/forms";
+
+@component({
+  selector: "app-user-input",
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: "./user-input.component.html",
+  styleUrl: "./user-input.component.css",
+})
+export class UserInputComponent {
+  enteredInitialInvestment = "0";
+}
+```
+
+#### HTML file
+
+- [(ngModel)] is Angular's selector to bind the value with the component.
+- Inside "" contains the name of the value from the ts file, e.g. "enteredInitialInvestment".
+- Hint: the 'name' attribute is required if you use [(ngModel)]!
+- Error message:
+
+  `NG01352: If ngModel is used within a form tag, either the name attribute must be set or the form`
+
+  `control must be defined as 'standalone' in ngModelOptions.`
+
+  `Example 1: <input [(ngModel)]="person.firstName" name="first">`
+
+```html
+<p>
+  <label for="initial-investment">Initial Investment</label>
+  <input type="number" id="initial-investment" name="initial-investment" [(ngModel)]="enteredInitialInvestment" />
+</p>
+```
