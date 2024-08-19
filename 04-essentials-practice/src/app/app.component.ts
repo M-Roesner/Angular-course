@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { UserInputComponent } from './user-input/user-input.component';
 import { InvestmentInput } from './investment-input.model';
@@ -11,14 +11,29 @@ import { InvestmentResultsComponent } from './investment-results/investment-resu
   imports: [HeaderComponent, UserInputComponent, InvestmentResultsComponent],
 })
 export class AppComponent {
-  resultsData?: {
-    year: number;
-    interest: number; // Zinsen
-    valueEndOfYear: number;
-    annualInvestment: number; // jährliche Investition
-    totalInterest: number; // Gesamt Zinsen
-    totalAmountInvested: number; // Investierter Gesamtbetrag
-  }[];
+  // resultsData without using of signal as store manager
+  // resultsData?: {
+  //   year: number;
+  //   interest: number; // Zinsen
+  //   valueEndOfYear: number;
+  //   annualInvestment: number; // jährliche Investition
+  //   totalInterest: number; // Gesamt Zinsen
+  //   totalAmountInvested: number; // Investierter Gesamtbetrag
+  // }[];
+
+  // resultsData with using of signal as store manager
+  resultsData = signal<
+    | {
+        year: number;
+        interest: number; // Zinsen
+        valueEndOfYear: number;
+        annualInvestment: number; // jährliche Investition
+        totalInterest: number; // Gesamt Zinsen
+        totalAmountInvested: number; // Investierter Gesamtbetrag
+      }[]
+    | undefined
+  >(undefined);
+
   onCalculateInvestmentResults(data: InvestmentInput) {
     // This content comes from the file investment-results.ts and was provided by the creator of the tutorial.
     const { initialInvestment, duration, expectedReturn, annualInvestment } =
@@ -46,6 +61,7 @@ export class AppComponent {
 
     console.log(annualData);
 
-    this.resultsData = annualData;
+    // this.resultsData = annualData; // without using signal
+    this.resultsData.set(annualData); // with using signal
   }
 }

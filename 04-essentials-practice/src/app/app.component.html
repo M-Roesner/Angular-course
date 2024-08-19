@@ -1,3 +1,8 @@
 <app-header />
 <app-user-input (calculate)="onCalculateInvestmentResults($event)" />
-<app-investment-results [results]="resultsData" />
+
+<!-- [results]="resultsData" without using signal -->
+<!-- <app-investment-results [results]="resultsData" /> -->
+
+<!-- [results]="resultsData()" - with using signal -->
+<app-investment-results [results]="resultsData()" />
