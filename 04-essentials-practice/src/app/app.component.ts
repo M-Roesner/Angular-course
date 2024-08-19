@@ -11,7 +11,9 @@ import { InvestmentResultsComponent } from './investment-results/investment-resu
   imports: [HeaderComponent, UserInputComponent, InvestmentResultsComponent],
 })
 export class AppComponent {
-  // resultsData without using of signal as store manager
+  // HINT: Currently the app is using the service provider!
+  // ----------------------------------------------------------------
+  // resultsData without using of signal as store manager:
   // resultsData?: {
   //   year: number;
   //   interest: number; // Zinsen
@@ -20,48 +22,17 @@ export class AppComponent {
   //   totalInterest: number; // Gesamt Zinsen
   //   totalAmountInvested: number; // Investierter Gesamtbetrag
   // }[];
-
-  // resultsData with using of signal as store manager
-  resultsData = signal<
-    | {
-        year: number;
-        interest: number; // Zinsen
-        valueEndOfYear: number;
-        annualInvestment: number; // jährliche Investition
-        totalInterest: number; // Gesamt Zinsen
-        totalAmountInvested: number; // Investierter Gesamtbetrag
-      }[]
-    | undefined
-  >(undefined);
-
-  onCalculateInvestmentResults(data: InvestmentInput) {
-    // This content comes from the file investment-results.ts and was provided by the creator of the tutorial.
-    const { initialInvestment, duration, expectedReturn, annualInvestment } =
-      data;
-    const annualData = [];
-    let investmentValue = initialInvestment;
-
-    for (let i = 0; i < duration; i++) {
-      const year = i + 1;
-      const interestEarnedInYear = investmentValue * (expectedReturn / 100);
-
-      investmentValue += interestEarnedInYear + annualInvestment;
-
-      const totalInterest =
-        investmentValue - annualInvestment * year - initialInvestment;
-      annualData.push({
-        year: year,
-        interest: interestEarnedInYear, // Zinsen
-        valueEndOfYear: investmentValue,
-        annualInvestment: annualInvestment, // jährliche Investition
-        totalInterest: totalInterest, // Gesamt Zinsen
-        totalAmountInvested: initialInvestment + annualInvestment * year, // Investierter Gesamtbetrag
-      });
-    }
-
-    console.log(annualData);
-
-    // this.resultsData = annualData; // without using signal
-    this.resultsData.set(annualData); // with using signal
-  }
+  // ----------------------------------------------------------------
+  // resultsData with using of signal as store manager:
+  // resultsData = signal<
+  //   | {
+  //       year: number;
+  //       interest: number; // Zinsen
+  //       valueEndOfYear: number;
+  //       annualInvestment: number; // jährliche Investition
+  //       totalInterest: number; // Gesamt Zinsen
+  //       totalAmountInvested: number; // Investierter Gesamtbetrag
+  //     }[]
+  //   | undefined
+  // >(undefined);
 }
