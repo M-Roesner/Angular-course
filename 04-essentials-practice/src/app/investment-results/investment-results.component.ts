@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject, input, Input } from '@angular/core';
+import { Component, computed, inject, input, Input } from '@angular/core';
 import { InvestmentService } from '../../investment.service';
 
 @Component({
@@ -13,9 +13,11 @@ export class InvestmentResultsComponent {
   // HINT: Currently the app is using the service provider!
   private investmentService = inject(InvestmentService);
 
-  get results() {
-    return this.investmentService.resultData;
-  }
+  // get results() {
+  //   return this.investmentService.resultData;
+  // }
+
+  results = computed(() => this.investmentService.resultData());
   // ----------------------------------------------------------------
   // With using signal:
   // results = input<
