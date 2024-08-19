@@ -77,6 +77,7 @@ import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-task",
+  standalone: true,
   imports: [DatePipe],
   templateUrl: "./task.component.html",
   styleUrl: "./task.component.css",
@@ -92,4 +93,42 @@ export class TaskComponent {
   <time>{{ task.dueDate | date : "fullDate" }}</time>
   <!-- some content ... -->
 </article>
+```
+
+## Forms:
+
+### Form submission
+
+To prevent the default event for submitting a form.
+
+#### TS file
+
+To use the event handling of the submit event, 'FormsModule' is required!
+
+```ts
+import { FormsModule } from "@angular/forms";
+
+@component({
+  selector: "app-user-input",
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: "./user-input.component.html",
+  styleUrl: "./user-input.component.css",
+})
+export class UserInputComponent {
+  onSubmit() {
+    console.log("Submitted");
+  }
+}
+```
+
+#### HTML file
+
+- (ngSubmit) is Angular's selector to prevent the standard event.
+- Inside "" contains the function that handles the submit event, e.g. "onSubmit()".
+
+```html
+<form (ngSubmit)="onSubmit()">
+  <!-- some code -->
+</form>
 ```
