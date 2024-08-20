@@ -1,8 +1,13 @@
-<p>
-  <label>{{ label() }}</label>
-  <!-- select="input, textarea">
+<!-- <p class="control"> -->
+<label>{{ label() }}</label>
+<!-- select="input, textarea">
    If you use this component, the given content has to be an input element or textarea!
    If there is another element it won't be displayed in this ng-content part!
   -->
-  <ng-content select="input, textarea"></ng-content>
-</p>
+<ng-content select="input, textarea"></ng-content>
+<!-- 
+   In this case the content can be an input element or textarea,
+   but if you use an extra component style you have to add something in the typescript file ...
+    'encapsulation: ViewEncapsulation.None,'
+  -->
+<!-- </p> -->
