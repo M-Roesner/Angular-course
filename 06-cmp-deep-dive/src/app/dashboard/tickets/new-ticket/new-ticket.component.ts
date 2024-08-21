@@ -2,7 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   OnInit,
+  output,
+  Output,
   viewChild,
   ViewChild,
 } from '@angular/core';
@@ -21,6 +24,9 @@ export class NewTicketComponent implements OnInit, AfterViewInit {
   @ViewChild('form') form?: ElementRef<HTMLFormElement>;
   // private form = viewChild.required<ElementRef<HTMLFormElement>>('form'); // with signal since Angualr v17.3
 
+  // @Output() add = new EventEmitter<{title: string; text: string}>();
+  add = output<{ title: string; text: string }>();
+
   ngOnInit() {
     console.log('OnInit');
     console.log(this.form?.nativeElement);
@@ -32,8 +38,7 @@ export class NewTicketComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(title: string, ticketText: string) {
-    console.log('title:' + title);
-    console.log('ticketText:' + ticketText);
+    this.add.emit({ title: title, text: ticketText });
     this.form?.nativeElement.reset(); // Reset the form after submission
 
     // Alternatively, you can pass the 'form' template variable as an angument
