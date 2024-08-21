@@ -146,6 +146,12 @@ Formatting a value with the currency:
 
 To prevent the default event for submitting a form.
 
+**Alternative ways to extract data:**
+
+- Input binding - `[(ngModel)]="enteredInitialInvestment"`
+- or
+- template variables - `#inputText`
+
 #### TS file
 
 To use the event handling of the submit event, 'FormsModule' is required!
@@ -178,7 +184,7 @@ export class UserInputComponent {
 </form>
 ```
 
-### Input binding
+### via Input binding
 
 To bind/connect the input binding with the component.
 
@@ -221,4 +227,51 @@ export class UserInputComponent {
   <label for="initial-investment">Initial Investment</label>
   <input type="number" id="initial-investment" name="initial-investment" [(ngModel)]="enteredInitialInvestment" />
 </p>
+```
+
+### via template variables
+
+#### TS file
+
+Hint: 'FormsModule' is required!
+
+```ts
+import { FormsModule } from "@angular/forms";
+
+@Component({
+  selector: "app-new-ticket",
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: "./new-ticket.component.html",
+  styleUrl: "./new-ticket.component.css",
+})
+export class NewTicketComponent {
+  onSubmit(title: string, ticketText: string) {
+    console.log("title:" + title);
+    console.log("ticketText:" + ticketText);
+  }
+}
+```
+
+#### HTML file
+
+- 'titleInput' itself receives an 'HTMLInputElement' that contains an object.
+- There you can find the key value to get the entered value.
+- In this example the value of the element is given directly.
+- The data will be passed to the TS file as an argument to the 'onSubmit' method.
+- Hint: the # sign is required on the input field .. !
+
+- By default, you have access to the HTML element itself, but if you set it to a user-defined component, you have access to this component!
+- Example:
+  `<input name="title" id="title" #titleInput /> - It is a default element and gets 'HTMLInputElement'`
+  `<app-control label="Title" #control > - Gets access to the 'ControlComponent' component`
+
+```html
+<form (ngSubmit)="onSubmit(titleInput.value, textInput.value)">
+  <app-control label="Title">
+    <!-- app-control = custom component -->
+    <input name="title" id="title" #titleInput />
+  </app-control>
+  <textarea name="request" id="request" rows="3" #textInput></textarea>
+</form>
 ```
