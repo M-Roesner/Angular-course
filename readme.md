@@ -188,6 +188,8 @@ export class UserInputComponent {
 
 To bind/connect the input binding with the component.
 
+Additionally: It also shows how you can reset the value.
+
 #### TS file
 
 To bind the value binding with the component, 'FormsModule' is required!
@@ -206,6 +208,15 @@ import { FormsModule } from "@angular/forms";
 })
 export class UserInputComponent {
   enteredInitialInvestment = "0";
+
+  onSubmit() {
+    this.calculate.emit({
+      initialInvestment: +this.enteredInitialInvestment(),
+      // ... some code
+    });
+    // reset the form inputs:
+    this.enteredInitialInvestment'0';
+  }
 }
 ```
 
@@ -231,12 +242,14 @@ export class UserInputComponent {
 
 ### via template variables
 
+Additionally: It also shows how you can reset the value.
+
 #### TS file
 
 Hint: 'FormsModule' is required!
 
 ```ts
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ViewChild, output } from "@angular/forms";
 
 @Component({
   selector: "app-new-ticket",
@@ -246,9 +259,14 @@ import { FormsModule } from "@angular/forms";
   styleUrl: "./new-ticket.component.css",
 })
 export class NewTicketComponent {
+  @ViewChild("form") form?: ElementRef<HTMLFormElement>;
+  // @ViewChild("form") - 'form' comes from '#form' variable on the form-tag
+  // ... <form (ngSubmit)="onSubmit(titleInput.value, textInput.value)" #form>
+  add = output<{ title: string; text: string }>();
+
   onSubmit(title: string, ticketText: string) {
-    console.log("title:" + title);
-    console.log("ticketText:" + ticketText);
+    this.add.emit({ title: title, text: ticketText });
+    this.form?.nativeElement.reset(); // Reset the form after submission
   }
 }
 ```
@@ -267,7 +285,7 @@ export class NewTicketComponent {
   `<app-control label="Title" #control > - Gets access to the 'ControlComponent' component`
 
 ```html
-<form (ngSubmit)="onSubmit(titleInput.value, textInput.value)">
+<form (ngSubmit)="onSubmit(titleInput.value, textInput.value)" #form>
   <app-control label="Title">
     <!-- app-control = custom component -->
     <input name="title" id="title" #titleInput />
