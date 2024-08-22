@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Task } from './task.model';
+import { Task, TaskStatus } from './task.model';
 
 /**
  * Service to manage tasks within the application.
@@ -24,11 +24,21 @@ export class TasksService {
   addTask(taskData: { title: string; description: string }): void {
     const newTask: Task = {
       ...taskData,
-      id: Math.random().toString(), // Generates a unique ID for the task.
-      status: 'OPEN', // Sets the initial status of the task as 'OPEN'.
+      id: Math.random().toString(),
+      status: 'OPEN',
     };
 
     // Updates the tasks array by adding the new task to the existing list.
     this.tasks.update((oldTasks) => [...oldTasks, newTask]);
+  }
+
+  updateTasksStatus(taskId: string, newStatus: TaskStatus) {
+    this.tasks.update((oldTasks) =>
+      oldTasks.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      )
+    );
+
+    console.log(this.tasks());
   }
 }
