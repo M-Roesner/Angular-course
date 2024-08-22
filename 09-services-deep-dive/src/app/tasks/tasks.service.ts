@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Task, TaskStatus } from './task.model';
+import { LoggingService } from '../logging.service';
 
 /**
  * Service to manage tasks within the application.
@@ -9,6 +10,8 @@ import { Task, TaskStatus } from './task.model';
   providedIn: 'root',
 })
 export class TasksService {
+  private loggingService = inject(LoggingService);
+
   // Private signal ensures only the service has direct access to modify the tasks.
   private tasks = signal<Task[]>([]);
 
@@ -30,6 +33,7 @@ export class TasksService {
 
     // Updates the tasks array by adding the new task to the existing list.
     this.tasks.update((oldTasks) => [...oldTasks, newTask]);
+    this.loggingService.log('ADDED TASK with title: ' + taskData.title);
   }
 
   updateTasksStatus(taskId: string, newStatus: TaskStatus) {
@@ -38,7 +42,6 @@ export class TasksService {
         task.id === taskId ? { ...task, status: newStatus } : task
       )
     );
-
-    console.log(this.tasks());
+    this.loggingService.log('CHANGE TASK STATUS TO: ' + newStatus);
   }
 }
