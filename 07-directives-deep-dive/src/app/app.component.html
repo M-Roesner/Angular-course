@@ -19,7 +19,7 @@
   Alternative: *appAuth - the * creates an ng-template under the hood
   ="'admin'" - the '' are needed because appAuth is automatically bound to [appAuth]. To pass a string instead of an object, you need to use ''.
   -->
-  <p *appAuth="'admin'" class="protected-content admin">
+  <p *appAuth="'admin'" appLog class="protected-content admin">
     Only admins should see this!
   </p>
   <p *appAuth="'user'" class="protected-content unauthenticated">
