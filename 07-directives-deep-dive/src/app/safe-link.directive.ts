@@ -1,4 +1,4 @@
-import { Directive, input } from '@angular/core';
+import { Directive, ElementRef, inject, input } from '@angular/core';
 
 @Directive({
   selector: 'a[appSafeLink]',
@@ -24,6 +24,9 @@ export class SafeLinkDirective {
    */
   queryParam = input<string>('myapp', { alias: 'appSafeLink' });
 
+  // helper reference to get the fitting element (here: anchor element) to use it instead of using '(event.target as HTMLAnchorElement)'
+  private hostElementRef = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
+
   constructor() {
     console.log('SafeLinkDirective is active!');
   }
@@ -32,9 +35,14 @@ export class SafeLinkDirective {
     // If an anchor element (a-tag) is clicked it will be a 'MouseEvent' automatically
     const wantsToLeave = window.confirm('Do you want to leave the app?');
     if (wantsToLeave) {
-      const address = (event.target as HTMLAnchorElement).href;
+      // const address = (event.target as HTMLAnchorElement).href;
       // (event.target as HTMLAnchorElement) - 'as HTMLAnchorElement' convince this event will be an anchor element.
-      (event.target as HTMLAnchorElement).href =
+      // (event.target as HTMLAnchorElement).href =
+      //   address + '?from=' + this.queryParam();
+
+      // Alternative with a reference to this host anchor element.
+      const address = this.hostElementRef.nativeElement.href;
+      this.hostElementRef.nativeElement.href =
         address + '?from=' + this.queryParam();
       return;
     }
