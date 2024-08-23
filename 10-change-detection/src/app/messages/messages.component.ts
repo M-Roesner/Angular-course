@@ -11,13 +11,14 @@ import { NewMessageComponent } from './new-message/new-message.component';
   imports: [MessagesListComponent, NewMessageComponent],
 })
 export class MessagesComponent {
-  // messages = signal<string[]>([]);
+  // messages = signal<string[]>([]); // Step 1: Changed to a MessagesService
 
   get debugOutput() {
     console.log('[Messages] "debugOutput" binding re-evaluated.');
     return 'Messages Component Debug Output';
   }
 
+  // Step 1: Removed because of using a MessagesService
   // onAddMessage(message: string) {
   //   this.messages.update((oldMessages) => [...oldMessages, message]);
   // }

@@ -10,9 +10,10 @@ import { MessagesService } from '../messages.service';
   styleUrl: './new-message.component.css',
 })
 export class NewMessageComponent {
-  // add = output<string>();
+  // add = output<string>(); // Step 1: Removed because of using a MessagesService
   private messageService = inject(MessagesService);
-  enteredText = signal('');
+  // enteredText = signal(''); // Step 2: Changed to a non signal
+  enteredText = '';
 
   get debugOutput() {
     console.log('[NewMessage] "debugOutput" binding re-evaluated.');
@@ -20,8 +21,10 @@ export class NewMessageComponent {
   }
 
   onSubmit() {
-    // this.add.emit(this.enteredText());
-    this.messageService.addMessage(this.enteredText());
-    this.enteredText.set('');
+    // this.add.emit(this.enteredText()); // Step 1: Changed to a MessagesService
+    // this.messageService.addMessage(this.enteredText()); // Step 2: Changed to a non signal
+    this.messageService.addMessage(this.enteredText);
+    // this.enteredText.set(''); // Step 2: Changed to a non signal
+    this.enteredText = '';
   }
 }
