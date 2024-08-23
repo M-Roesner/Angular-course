@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { MessagesService } from '../messages.service';
 
 @Component({
   selector: 'app-messages-list',
@@ -7,7 +8,9 @@ import { Component, input } from '@angular/core';
   styleUrl: './messages-list.component.css',
 })
 export class MessagesListComponent {
-  messages = input.required<string[]>();
+  private messageService = inject(MessagesService);
+  messages = this.messageService.allMessages;
+  // messages = input.required<string[]>();
 
   get debugOutput() {
     console.log('[MessagesList] "debugOutput" binding re-evaluated.');
