@@ -1,10 +1,9 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, map, throwError } from 'rxjs';
 
 import { Place } from '../place.model';
 import { PlacesComponent } from '../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
+import { PlacesService } from '../places.service';
 
 @Component({
   selector: 'app-available-places',
@@ -18,49 +17,34 @@ export class AvailablePlacesComponent implements OnInit {
   isFetching = signal(false);
   error = signal('');
 
-  private httpClient = inject(HttpClient);
-  // constructor(httpClient: HttpClient){} // Alternative to the inject function
+  private placesService = inject(PlacesService);
 
   private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.isFetching.set(true);
-    const subscription = this.httpClient
-      .get<{ places: Place[] }>('http://localhost:3000/places')
-      .pipe(
-        map((resData) => resData.places),
-        catchError((error, obs) => {
-          console.log(error.message);
-          return throwError(
-            () =>
-              new Error(
-                'Something went wrong fetching places. Please try again later.'
-              )
-          );
-        })
-      ) // Pipe is not necessarily needed.
-      .subscribe({
+    const subscription = this.placesService.loadAvailablePlaces().subscribe({
+      // Alternatively, you can use the pipe function before. Pipe function is curretly inside the service!
+      // next: (resData) => {
+      //   this.places.set(resData.places);
+      // },
+      next: (places) => {
+        this.places.set(places);
+      },
+      complete: () => {
+        this.isFetching.set(false);
+      },
+      error: (error: Error) => {
         // Alternatively, you can use the pipe function before.
-        // next: (resData) => {
-        //   this.places.set(resData.places);
-        // },
-        next: (places) => {
-          this.places.set(places);
-        },
-        complete: () => {
-          this.isFetching.set(false);
-        },
-        error: (error: Error) => {
-          // Alternatively, you can use the pipe function before.
-          // console.log(error.message);
+        // console.log(error.message);
 
-          // this.error.set(
-          //   'Something went wrong fetching places. Please try again later.'
-          // );
+        // this.error.set(
+        //   'Something went wrong fetching places. Please try again later.'
+        // );
 
-          this.error.set(error.message);
-        },
-      });
+        this.error.set(error.message);
+      },
+    });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
@@ -68,12 +52,14 @@ export class AvailablePlacesComponent implements OnInit {
   }
 
   onSelectPlaces(selectorPace: Place) {
-    this.httpClient
-      .put('http://localhost:3000/user-places', {
-        placeId: selectorPace.id,
-      })
+    const subscription = this.placesService
+      .addPlaceToUserPlaces(selectorPace.id)
       .subscribe({
         next: (resData) => console.log(resData),
       });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 }
