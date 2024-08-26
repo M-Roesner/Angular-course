@@ -42,10 +42,33 @@ export class PlacesService {
     );
   }
 
-  addPlaceToUserPlaces(placeId: string) {
-    return this.httpClient.put('http://localhost:3000/user-places', {
-      placeId,
-    });
+  addPlaceToUserPlaces(place: Place) {
+    const prevPlaces = this.userPlaces();
+
+    // ensure there are no duplicate in userPlaces
+    if (!prevPlaces.some((p) => p.id === place.id)) {
+      // Immediately updates the local userPlaces state with the new place.
+      // This ensures the UI reflects the change instantly.
+      this.userPlaces.set([...prevPlaces, place]);
+    }
+
+    // If you use the update method like this:
+    // this.userPlaces.update(prevPlaces => [...prevPlaces, place]);
+    // This might cause a bug if the data isn't successfully stored on the backend.
+    // To prevent this, you can use the pipe (shown below) and employ catchError()
+    // to revert the local state in case of an error.
+
+    return this.httpClient
+      .put('http://localhost:3000/user-places', {
+        placeId: place.id,
+      })
+      .pipe(
+        catchError((error) => {
+          // Reverts the userPlaces state back to its previous state if the HTTP request fails.
+          this.userPlaces.set([...prevPlaces]);
+          return throwError(() => new Error('Failed to store selected place.'));
+        })
+      );
   }
 
   removeUserPlace(place: Place) {}
