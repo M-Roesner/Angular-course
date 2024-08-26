@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, tap, throwError } from 'rxjs';
 
 import { Place } from './place.model';
 
@@ -25,6 +25,20 @@ export class PlacesService {
     return this.fetchPlaces(
       'http://localhost:3000/user-places',
       'Something went wrong fetching places your favorite places. Please try again later.'
+    ).pipe(
+      tap({
+        // `tap` is used to update local state.
+        // In this case, it updates `userPlaces` when the fetch is successful.
+        // Alternative: You can update `userPlaces` inside the `subscribe()` method after calling loadUserPlaces():
+        // .subscribe({
+        //   next: (places) => {
+        //     this.userPlaces.set(places);
+        //   },
+        //   complete: ... ,
+        //   error: ...
+        // })
+        next: (userPlaces) => this.userPlaces.set(userPlaces),
+      })
     );
   }
 
