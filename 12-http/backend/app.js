@@ -31,6 +31,8 @@ app.get("/places", async (req, res) => {
 });
 
 app.get("/user-places", async (req, res) => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   const fileContent = await fs.readFile("./data/user-places.json");
 
   const places = JSON.parse(fileContent);
