@@ -1,5 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
+  HttpEventType,
   HttpHandlerFn,
   HttpRequest,
   provideHttpClient,
@@ -7,6 +8,7 @@ import {
 } from '@angular/common/http';
 
 import { AppComponent } from './app/app.component';
+import { tap } from 'rxjs';
 
 // Interceptor function to log or manipulate outgoing HTTP requests.
 function logginInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
@@ -22,7 +24,18 @@ function logginInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
   console.log(request);
 
   // Passes the (possibly modified) request to the next handler in the chain.
-  return next(request);
+  return next(request).pipe(
+    tap({
+      // Logs the incoming response, including the status code and body content.
+      next: (event) => {
+        if (event.type === HttpEventType.Response) {
+          console.log('[Incoming Response]');
+          console.log(event.status);
+          console.log(event.body);
+        }
+      },
+    })
+  );
 }
 
 // Bootstraps the Angular application and provides the HTTP client with the logging interceptor.
