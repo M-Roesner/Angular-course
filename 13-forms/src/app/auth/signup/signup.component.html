@@ -175,4 +175,8 @@
     </button>
     <button type="submit" class="button">Sign up</button>
   </p>
+
+  @if (myForm.touched && myForm.invalid) {
+  <p class="control-error">Invalid form - please check your input data.</p>
+  }
 </form>
