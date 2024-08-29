@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { of } from 'rxjs';
 
 function mustContainQuestionMark(control: AbstractControl) {
   if (control.value.includes('?')) {
@@ -13,6 +14,14 @@ function mustContainQuestionMark(control: AbstractControl) {
   }
 
   return { doesNotContainQuestionMark: true };
+}
+
+function emailIsUnique_dummyValidator(control: AbstractControl) {
+  if (control.value !== 'test@example.com') {
+    return of(null);
+  }
+
+  return of({ notUnique: true });
 }
 
 @Component({
@@ -28,6 +37,7 @@ export class LoginViaReactiveComponent {
     // lets angualar know, how is this form connected to the actual templete (input elements)
     email: new FormControl('', {
       validators: [Validators.email, Validators.required],
+      asyncValidators: [emailIsUnique_dummyValidator],
     }),
     password: new FormControl('', {
       validators: [
