@@ -1,15 +1,18 @@
-<form>
+<!-- [formGroup] connects the form with the form in the ts file with the value “myform” in this case -->
+<form [formGroup]="myform">
   <h2>Login via reactive</h2>
 
   <div class="control-row">
     <div class="control no-margin">
       <label for="email">Email</label>
-      <input id="email" type="email" />
+      <!-- [formControl]="myform.controls.email" connects the input field to myform -->
+      <input id="email" type="email" [formControl]="myform.controls.email" />
     </div>
 
     <div class="control no-margin">
       <label for="password">Password</label>
-      <input id="password" type="password" />
+      <!-- formControlName="password" connects the input field to myform, an alternative to [formControl] -->
+      <input id="password" type="password" formControlName="password" />
     </div>
 
     <button class="button">Login</button>
