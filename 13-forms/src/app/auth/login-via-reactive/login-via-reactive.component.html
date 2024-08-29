@@ -1,5 +1,5 @@
 <!-- [formGroup] connects the form with the form in the ts file with the value “myform” in this case -->
-<form [formGroup]="myform">
+<form [formGroup]="myform" (ngSubmit)="onSubmit()">
   <h2>Login via reactive</h2>
 
   <div class="control-row">
@@ -16,5 +16,15 @@
     </div>
 
     <button class="button">Login</button>
+
+    <!-- @if (myform.controls.email.touched && myform.controls.email.dirty &&
+    myform.controls.email.invalid) { -->
+    @if (emailIsInvalid) {
+    <p class="control-error">Please enter a valid email address.</p>
+    } @if (passwordIsInvalid) {
+    <p class="control-error">
+      Please enter a valid password - at least 6 characters long.
+    </p>
+    }
   </div>
 </form>
