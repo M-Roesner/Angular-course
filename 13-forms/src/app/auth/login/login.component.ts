@@ -21,6 +21,26 @@ export class LoginComponent {
 
   constructor() {
     afterNextRender(() => {
+      const savedForm = window.localStorage.getItem('safed-login-form');
+
+      if (savedForm) {
+        const loadedFormData = JSON.parse(savedForm);
+        const savedEmail = loadedFormData.email;
+
+        // The timeout must be set here, because if the page is not fully initialized, you will receive an error message
+        // Message: TypeError: Cannot read properties of undefined (reading 'setValue')
+        // Setting a timeout is one way of waiting for initialization.
+        setTimeout(() => {
+          // This sets the whole form data:
+          // this.form().setValue({
+          //   email: savedEmail,
+          //   password: '',
+          // });
+          // This sets only the 'email' variable
+          this.form().controls['email'].setValue(savedEmail);
+        }, 1);
+      }
+
       const subbscription = this.form()
         .valueChanges?.pipe(
           // debounceTime - is an optimization for performance otherwise it will store the value after every change.
