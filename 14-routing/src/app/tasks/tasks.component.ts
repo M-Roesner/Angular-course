@@ -5,6 +5,7 @@ import {
   inject,
   input,
   OnInit,
+  signal,
 } from '@angular/core';
 
 import { TaskComponent } from './task/task.component';
@@ -21,26 +22,47 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 export class TasksComponent implements OnInit {
   userId = input.required<string>();
 
-  private tasksService = inject(TasksService);
-
-  userTasks = computed(() =>
-    this.tasksService.allTasks().filter((task) => task.userId === this.userId())
-  );
-
-  // Extracting Query Parameters via Inputs
+  // Extracting Query Parameters via Inputs - a short way!
   // Attention the name (in this case 'order') has to be the same name as in the template!
   // order = input<'asc' | 'desc'>();
 
-  // Extracting Query Parameters via Observables
-  order?: 'asc' | 'desc';
+  // Using signal to sort the tasks
+  order = signal<'asc' | 'desc'>('desc');
   private activatedRoute = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
-
   ngOnInit(): void {
     const subscription = this.activatedRoute.queryParams.subscribe({
-      next: (params) => (this.order = params['order']),
+      next: (params) => this.order.set(params['order']),
     });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
+
+  private tasksService = inject(TasksService);
+
+  userTasks = computed(() =>
+    this.tasksService
+      .allTasks()
+      .filter((task) => task.userId === this.userId())
+      .sort((a, b) => {
+        // sorts the tasks according to the order
+        if (this.order() === 'desc') {
+          return a.id > b.id ? -1 : 1;
+        } else {
+          return a.id > b.id ? 1 : -1;
+        }
+      })
+  );
+
+  // Extracting Query Parameters via Observables
+  // order?: 'asc' | 'desc';
+  // private activatedRoute = inject(ActivatedRoute);
+  // private destroyRef = inject(DestroyRef);
+  // ngOnInit(): void {
+  //   const subscription = this.activatedRoute.queryParams.subscribe({
+  //     next: (params) => (this.order = params['order']),
+  //   });
+
+  //   this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  // }
 }
