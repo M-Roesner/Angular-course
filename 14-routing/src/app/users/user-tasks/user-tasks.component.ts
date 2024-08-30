@@ -24,9 +24,10 @@ import {
   templateUrl: './user-tasks.component.html',
   styleUrl: './user-tasks.component.css',
 })
-export class UserTasksComponent {
+export class UserTasksComponent implements OnInit {
   // The name userName comes from the router with help of the resolcer.
-  userName = input.required<string>();
+  userName = input.required<string>(); // Here is the dynamic data stored
+  message = input.required<string>(); // Here is the static data stored
   // /**
   //  * This is a code snippet from the router:
   //  * {
@@ -37,6 +38,16 @@ export class UserTasksComponent {
   //  *   userName: resolveUserName,
   //  * },
   //  */
+
+  // With this approach, you can retrieve both data (static and dynamic) from the router.
+  private activatedRoute = inject(ActivatedRoute);
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+    });
+  }
 
   // ----------------------------------------------------------------
   // // The code below is old it gets the data inside this component.
