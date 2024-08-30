@@ -13,6 +13,10 @@ import { RouterLink } from '@angular/router';
 })
 export class TasksComponent {
   userId = input.required<string>();
+
+  // Attention the name (in this case 'order') has to be the same name as in the template!
+  order = input<'asc' | 'desc'>();
+
   private tasksService = inject(TasksService);
 
   userTasks = computed(() =>
