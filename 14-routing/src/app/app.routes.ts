@@ -16,6 +16,13 @@ export const routes: Routes = [
     component: UserTasksComponent,
     children: [
       {
+        // If the user navigates manually inside the url.
+        // This is ensures that the user will always see the correct path.
+        path: '', // <your-domain>/users/<userId>/
+        redirectTo: 'tasks', // Redirect to tasks if no specific path is given
+        pathMatch: 'full',
+      },
+      {
         path: 'tasks', // <your-domain>/users/<userId>/tasks
         component: TasksComponent,
       },
