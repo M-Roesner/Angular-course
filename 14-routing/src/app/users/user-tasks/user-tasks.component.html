@@ -2,6 +2,8 @@
   <header>
     <h2>{{ userName }} Tasks</h2>
     <menu>
+      <!-- constructs the relative path to a complete path.  -->
+      <!-- 'tasks/new' will be added to the current url path -->
       <a [routerLink]="['tasks/new']">Add Task</a>
     </menu>
   </header>
